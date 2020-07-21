@@ -31,18 +31,8 @@ The ReploidTestService and ReploidTestClient both have code that serves as an ex
 # Alright, how does it work?
 **Architecture**
 
-```mermaid
-graph BT
-A[ReploidBase]
-B[ReploidServer]
-C[ReploidClient]
-D[ReploidGateway]
-E[ReploidService]
-B --> A
-C --> A
-D --> B
-E --> B
-```
+![](https://github.com/Kaiser-san/Reploid/blob/master/resources/reploid_architecture.jpg)
+
 When a Client wants something from a server, it makes a request using the gateway. The gateway then does load balancing and connects the Client to its designated Service. If this is the first time the Client has come to the gateway, then it chooses a free Service instance based on the specified algorithm. Otherwise it connects to the previously used instance. The gateway also does health checks, to see if an instance is still alive and has enough resources to take more Clients. There can be multiple Gateways for a single cluster, ensuring that there is no single point of failure.
 
 **Load balancing**
