@@ -10,30 +10,31 @@ HostInetInfo NetworkUtils::queryHostInetInfo() {
     return resolver.resolve(query);
 }
 
-std::string NetworkUtils::hostIP(unsigned short family) {
+utility::string_t NetworkUtils::hostIP(unsigned short family) {
     auto hostInetInfo = queryHostInetInfo();
     tcp::resolver::iterator end;
     while (hostInetInfo != end) {
         tcp::endpoint ep = *hostInetInfo++;
         sockaddr sa = *ep.data();
         if (sa.sa_family == family) {
-            return ep.address().to_string();
+            return utility::conversions::to_string_t(ep.address().to_string());
         }
     }
     return nullptr;
 }
 
-std::string NetworkUtils::hostIP4()
+utility::string_t NetworkUtils::hostIP4()
 {
-    return hostIP(AF_INET);
+    return _XPLATSTR("localhost");
+	//hostIP(AF_INET);
 }
 
-std::string NetworkUtils::hostIP6()
+utility::string_t NetworkUtils::hostIP6()
 {
     return hostIP(AF_INET6);
 }
 
-std::string NetworkUtils::hostName()
+utility::string_t NetworkUtils::hostName()
 {
-    return host_name();
+    return utility::conversions::to_string_t(host_name());
 }

@@ -3,10 +3,31 @@
 
 #include <iostream>
 #include "rest_controller/controller.hpp"
+#include "user_interrupt_handler.h"
 
-int main()
-{
-    std::cout << "Hello World!\n";
+int main(int argc, const char* argv[]) {
+	reploid::InterruptHandler::hookSIGINT();
+
+	reploid::Controller server;
+    server.setEndpoint(_XPLATSTR("http://host_auto_ip4:6502/kaiser/api"));
+
+    try {
+        // wait for server initialization...
+        server.accept().wait();
+        std::cout << "Modern C++ Microservice now listening for requests at: " << utility::conversions::to_utf8string(server.endpoint()) << '\n';
+
+        reploid::InterruptHandler::waitForUserInterrupt();
+
+        server.shutdown().wait();
+    }
+    catch (std::exception& e) {
+        std::cerr << "something wrong happen! :(" << '\n';
+        std::cerr << e.what() << '\n';
+    }
+    catch (...) {
+    }
+
+    return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

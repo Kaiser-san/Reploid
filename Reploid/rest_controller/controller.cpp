@@ -11,15 +11,15 @@ namespace reploid {
     {
     }
 
-    /*void Controller::setEndpoint(const std::string& value) {
+    void Controller::setEndpoint(const utility::string_t& value) {
         uri endpointURI(value);
         uri_builder endpointBuilder;
 
         endpointBuilder.set_scheme(endpointURI.scheme());
-        if (endpointURI.host() == "host_auto_ip4") {
+        if (endpointURI.host() == _XPLATSTR("host_auto_ip4")) {
             endpointBuilder.set_host(NetworkUtils::hostIP4());
         }
-        else if (endpointURI.host() == "host_auto_ip6") {
+        else if (endpointURI.host() == _XPLATSTR("host_auto_ip6")) {
             endpointBuilder.set_host(NetworkUtils::hostIP6());
         }
         endpointBuilder.set_port(endpointURI.port());
@@ -28,9 +28,9 @@ namespace reploid {
         _listener = http_listener(endpointBuilder.to_uri());
     }
 
-    std::string Controller::endpoint() const {
+    utility::string_t Controller::endpoint() const {
         return _listener.uri().to_string();
-    }*/
+    }
 
     pplx::task<void> Controller::accept() {
         initRestOpHandlers();
@@ -39,6 +39,14 @@ namespace reploid {
 
     pplx::task<void> Controller::shutdown() {
         return _listener.close();
+    }
+
+    void Controller::handleGet(http_request message)
+    {
+        auto response = json::value::object();
+        response[_XPLATSTR("version")] = json::value::string(_XPLATSTR("0.1.1"));
+        response[_XPLATSTR("status")] = json::value::string(_XPLATSTR("ready!"));
+        message.reply(status_codes::OK, response);
     }
 
     std::vector<utility::string_t> Controller::requestPath(const http_request& message) {

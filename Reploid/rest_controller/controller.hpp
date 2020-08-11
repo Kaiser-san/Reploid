@@ -2,9 +2,10 @@
 
 
 #include <string>
+#include "common.hpp"
 #include <cpprest/http_listener.h>
 #include <cpprest/http_msg.h>
-#undef U
+
 #include <pplx/pplxtasks.h>
 
 using namespace web;
@@ -22,10 +23,18 @@ namespace reploid {
             Controller();
             ~Controller();
 
+            void setEndpoint(const utility::string_t& value);
+            utility::string_t endpoint() const;
+
             pplx::task<void> accept();
             pplx::task<void> shutdown();
 
-            virtual void initRestOpHandlers() = 0;
+            virtual void initRestOpHandlers()
+            {
+                _listener.support(methods::GET, std::bind(&Controller::handleGet, this, std::placeholders::_1));
+            }
+    	
+            void handleGet(http_request message);
 
 
             std::vector<utility::string_t> requestPath(const http_request& message);

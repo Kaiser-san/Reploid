@@ -12,16 +12,16 @@ namespace reploid {
     	
 	    private:
 	        static HostInetInfo queryHostInetInfo();
-	        static std::string hostIP(unsigned short family);
+	        static utility::string_t hostIP(unsigned short family);
     		
 	    public:
 	        // gets the host IP4 string formatted
-			static std::string hostIP4();
+			static utility::string_t hostIP4();
 
 	        // gets the host IP6 string formatted
-			static std::string hostIP6();
+			static utility::string_t hostIP6();
     	
-			static std::string hostName();
+			static utility::string_t hostName();
     };
 
 }

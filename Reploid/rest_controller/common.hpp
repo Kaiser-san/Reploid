@@ -16,6 +16,9 @@
 #include <boost/asio.hpp>
 #include <boost/algorithm/string.hpp>
 
+#define _TURN_OFF_PLATFORM_STRING
+#include <cpprest/asyncrt_utils.h>
+
 #include <string>
 #include <iostream>
 #include <vector>
