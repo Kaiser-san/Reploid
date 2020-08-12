@@ -4,21 +4,21 @@
 #include <iostream>
 #include "rest_controller/controller.hpp"
 #include "user_interrupt_handler.h"
+#include "simple_service.hpp"
 
 int main(int argc, const char* argv[]) {
 	reploid::InterruptHandler::hookSIGINT();
 
-	reploid::Controller server;
-    server.setEndpoint(_XPLATSTR("http://host_auto_ip4:6502/kaiser/api"));
+	auto server = std::make_unique<SimpleService>(_XPLATSTR("http://host_auto_ip4:6502/kaiser/api"));
 
     try {
         // wait for server initialization...
-        server.accept().wait();
-        std::cout << "Modern C++ Microservice now listening for requests at: " << utility::conversions::to_utf8string(server.endpoint()) << '\n';
+        server->accept().wait();
+        std::cout << "Modern C++ Microservice now listening for requests at: " << utility::conversions::to_utf8string(server->route()) << '\n';
 
         reploid::InterruptHandler::waitForUserInterrupt();
 
-        server.shutdown().wait();
+        server->shutdown().wait();
     }
     catch (std::exception& e) {
         std::cerr << "something wrong happen! :(" << '\n';

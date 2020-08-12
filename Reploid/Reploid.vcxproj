@@ -21,11 +21,14 @@
   <ItemGroup>
     <ClInclude Include="rest_controller\common.hpp" />
     <ClInclude Include="rest_controller\controller.hpp" />
-    <ClInclude Include="rest_controller\Endpoint.hpp" />
+    <ClInclude Include="rest_controller\endpoint.hpp" />
+    <ClInclude Include="rest_controller\endpoint_key.hpp" />
+    <ClInclude Include="rest_controller\endpoint_type.hpp" />
     <ClInclude Include="rest_controller\network_util.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rest_controller\controller.cpp" />
+    <ClCompile Include="rest_controller\endpoint.cpp" />
     <ClCompile Include="rest_controller\network_util.cpp" />
   </ItemGroup>
   <ItemGroup>
